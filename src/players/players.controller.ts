@@ -2,6 +2,7 @@ import {
 	Body,
 	ConflictException,
 	Controller,
+	Delete,
 	Get,
 	NotFoundException,
 	Param,
@@ -9,36 +10,34 @@ import {
 	Post,
 } from "@nestjs/common";
 import { User } from "@prisma/client";
-import { UsersService } from "src/users/users.service";
+import { PlayersService } from "./players.service";
 
 @Controller("players")
 export class PlayersController {
-	constructor(private readonly usersService: UsersService) {}
+	constructor(private readonly playersService: PlayersService) {}
 
 	@Get()
 	async findAll(): Promise<User[]> {
-		const users = await this.usersService.user().findMany();
+		const users = await this.playersService.player().findMany();
 		return users;
 	}
 
 	@Get(":id")
 	async findOne(@Param("id") id: string): Promise<User> {
-		const user = await this.usersService.user().findUnique({
+		const user = await this.playersService.player().findUnique({
 			where: {
 				id: parseInt(id),
 			},
 		});
 
-		if (!user) {
-			throw new NotFoundException(`User with id:${id} not found`);
-		}
+		if (!user) throw new NotFoundException(`User with id: ${id} not found`);
 		return user;
 	}
 
 	@Post()
-	async create(@Body() user: User) {
+	async create(@Body() user: User): Promise<User> {
 		try {
-			const newUser = await this.usersService.user().create({
+			const newUser = await this.playersService.player().create({
 				data: user,
 			});
 			return newUser;
@@ -48,7 +47,7 @@ export class PlayersController {
 				err.code === "P2002" &&
 				err.meta?.target?.includes("unique constraint")
 			) {
-				throw new ConflictException("Email already exists");
+				throw new ConflictException("Username already exists");
 			}
 			throw err;
 		}
@@ -60,15 +59,14 @@ export class PlayersController {
 		@Body() user: Partial<User>,
 	): Promise<User> {
 		try {
-			const existingUser = this.usersService.user().findUnique({
+			const existingUser = this.playersService.player().findUnique({
 				where: {
 					id: parseInt(id),
 				},
 			});
-			if (!existingUser) {
-				throw new NotFoundException(`User with id:${id} not found`);
-			}
-			const updatedUser = await this.usersService.user().update({
+			if (!existingUser)
+				throw new NotFoundException(`User with id: ${id} not found`);
+			const updatedUser = await this.playersService.player().update({
 				where: {
 					id: parseInt(id),
 				},
@@ -76,7 +74,27 @@ export class PlayersController {
 			});
 			return updatedUser;
 		} catch (err) {
-			console.error(err);
+			throw err;
+		}
+	}
+
+	@Delete(":id")
+	async delete(@Param("id") id: string) {
+		try {
+			const existingUser = await this.playersService.player().findUnique({
+				where: {
+					id: parseInt(id),
+				},
+			});
+			if (existingUser) {
+				await this.playersService.player().delete({
+					where: {
+						id: parseInt(id),
+					},
+				});
+			} else throw new NotFoundException(`User with id: ${id} not found`);
+		} catch (err) {
+			throw err;
 		}
 	}
 }

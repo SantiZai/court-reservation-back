@@ -2,14 +2,14 @@ import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 
 @Injectable()
-export class UsersService {
-	private readonly prisma: PrismaClient;
+export class PlayersService {
+	private prisma: PrismaClient;
 
 	constructor() {
 		this.prisma = new PrismaClient();
 	}
 
-	user() {
+	player() {
 		return this.prisma.user;
 	}
 }
