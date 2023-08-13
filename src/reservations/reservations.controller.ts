@@ -1,6 +1,5 @@
 import {
 	Body,
-	ConflictException,
 	Controller,
 	Delete,
 	Get,
@@ -83,14 +82,14 @@ export class ReservationsController {
 	@Delete(":id")
 	async delete(@Param("id") id: string) {
 		try {
-			const existingUser = await this.reservationsService
+			const existingReservation = await this.reservationsService
 				.reservation()
 				.findUnique({
 					where: {
 						id: parseInt(id),
 					},
 				});
-			if (existingUser) {
+			if (existingReservation) {
 				await this.reservationsService.reservation().delete({
 					where: {
 						id: parseInt(id),
