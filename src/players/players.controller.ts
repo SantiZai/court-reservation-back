@@ -28,6 +28,9 @@ export class PlayersController {
 			where: {
 				id: parseInt(id),
 			},
+			include: {
+				reservations: true,
+			},
 		});
 
 		if (!user) throw new NotFoundException(`User with id: ${id} not found`);

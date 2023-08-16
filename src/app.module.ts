@@ -7,6 +7,9 @@ import { CourtsService } from "./courts/courts.service";
 import { ReservationsService } from "./reservations/reservations.service";
 import { CourtsController } from "./courts/courts.controller";
 import { PlayersService } from "./players/players.service";
+import { AuthController } from "./auth/auth.controller";
+import { AuthService } from "./auth/auth.service";
+import { GoogleOAuthStrategy } from "./auth/strategies/google-oauth.strategy";
 
 @Module({
 	imports: [],
@@ -16,7 +19,15 @@ import { PlayersService } from "./players/players.service";
 		PlayersController,
 		ReservationsController,
 		ReservationsController,
+		AuthController,
 	],
-	providers: [AppService, PlayersService, CourtsService, ReservationsService],
+	providers: [
+		AppService,
+		PlayersService,
+		CourtsService,
+		ReservationsService,
+		AuthService,
+		GoogleOAuthStrategy,
+	],
 })
 export class AppModule {}
