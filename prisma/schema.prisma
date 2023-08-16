@@ -14,8 +14,9 @@ enum State {
 
 model User {
   id           Int           @id @default(autoincrement())
+  email        String        @unique @db.VarChar(255)
   fullname     String        @unique @db.VarChar(255)
-  password     String        @db.VarChar(255)
+  picture      String        @db.VarChar(255)
   admin        Boolean       @default(false)
   reservations Reservation[]
 }
