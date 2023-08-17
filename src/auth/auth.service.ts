@@ -11,4 +11,8 @@ export class AuthService {
             user: req.user
         }
     }
+
+    verifyAndDecodeAccessToken() {
+        
+    }
 }
