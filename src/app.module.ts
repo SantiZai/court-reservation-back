@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { PlayersController } from "./players/players.controller";
@@ -10,6 +10,7 @@ import { PlayersService } from "./players/players.service";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { GoogleOAuthStrategy } from "./auth/strategies/google-oauth.strategy";
+import { AuthMiddleware } from "./auth/auth.middleware";
 
 @Module({
 	imports: [],
@@ -30,4 +31,8 @@ import { GoogleOAuthStrategy } from "./auth/strategies/google-oauth.strategy";
 		GoogleOAuthStrategy,
 	],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(AuthMiddleware).forRoutes("protected-route");
+	}
+}

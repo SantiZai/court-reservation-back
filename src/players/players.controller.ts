@@ -8,13 +8,16 @@ import {
 	Param,
 	Patch,
 	Post,
+	Req,
 } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PlayersService } from "./players.service";
+import { Request } from "express";
+import { AuthService } from "src/auth/auth.service";
 
 @Controller("players")
 export class PlayersController {
-	constructor(private readonly playersService: PlayersService) {}
+	constructor(private readonly playersService: PlayersService, private readonly authService: AuthService) {}
 
 	@Get()
 	async findAll(): Promise<User[]> {
@@ -35,6 +38,12 @@ export class PlayersController {
 
 		if (!user) throw new NotFoundException(`User with id: ${id} not found`);
 		return user;
+	}
+
+	@Get("profile/:token")
+	async getProfile(@Param("token") token: string, @Req() req: Request): Promise<User> {
+		const accessToken = req.cookies.access_token;
+		const userData = this.authService.verifyAndDecodeAccessToken(token);
 	}
 
 	@Post()
