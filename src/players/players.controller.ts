@@ -12,12 +12,14 @@ import {
 } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PlayersService } from "./players.service";
-import { Request } from "express";
 import { AuthService } from "src/auth/auth.service";
 
 @Controller("players")
 export class PlayersController {
-	constructor(private readonly playersService: PlayersService, private readonly authService: AuthService) {}
+	constructor(
+		private readonly playersService: PlayersService,
+		private readonly authService: AuthService,
+	) {}
 
 	@Get()
 	async findAll(): Promise<User[]> {
@@ -40,11 +42,14 @@ export class PlayersController {
 		return user;
 	}
 
-	@Get("profile/:token")
-	async getProfile(@Param("token") token: string, @Req() req: Request): Promise<User> {
-		const accessToken = req.cookies.access_token;
-		const userData = this.authService.verifyAndDecodeAccessToken(token);
-	}
+	/* @Get("profile")
+	//TODO: Pasar el accessToken como token para acceder a la info del usuario
+	async getProfile(@Req() req: any): Promise<any> {
+		const userData = await this.authService.getGoogleProfileData(
+			req.user.access_token,
+		);
+		return userData;
+	} */
 
 	@Post()
 	async create(@Body() user: User): Promise<User> {
