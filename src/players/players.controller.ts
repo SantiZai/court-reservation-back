@@ -29,27 +29,32 @@ export class PlayersController {
 
 	@Get(":id")
 	async findOne(@Param("id") id: string): Promise<User> {
-		const user = await this.playersService.player().findUnique({
-			where: {
-				id: parseInt(id),
-			},
-			include: {
-				reservations: true,
-			},
-		});
-
-		if (!user) throw new NotFoundException(`User with id: ${id} not found`);
-		return user;
+		try {
+			const user = await this.playersService.player().findUnique({
+				where: {
+					id: parseInt(id),
+				},
+				include: {
+					reservations: true,
+				},
+			});
+			if (!user) throw new NotFoundException(`User with id: ${id} not found`);
+			return user;
+		} catch (err) {
+			return err;
+		}
 	}
 
-	/* @Get("profile")
+	@Get("profile/:token")
 	//TODO: Pasar el accessToken como token para acceder a la info del usuario
-	async getProfile(@Req() req: any): Promise<any> {
-		const userData = await this.authService.getGoogleProfileData(
-			req.user.access_token,
-		);
-		return userData;
-	} */
+	async getProfile(@Param("token") token: string): Promise<any> {
+		try {
+			const userData = await this.authService.getGoogleProfileData(token);
+			return userData;
+		} catch (err) {
+			return err;
+		}
+	}
 
 	@Post()
 	async create(@Body() user: User): Promise<User> {
