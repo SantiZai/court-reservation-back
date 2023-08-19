@@ -13,6 +13,7 @@ import {
 import { User } from "@prisma/client";
 import { PlayersService } from "./players.service";
 import { AuthService } from "src/auth/auth.service";
+import { Request } from "express";
 
 @Controller("players")
 export class PlayersController {
@@ -20,6 +21,17 @@ export class PlayersController {
 		private readonly playersService: PlayersService,
 		private readonly authService: AuthService,
 	) {}
+
+	@Get("profile")
+	async getProfile(@Req() req: Request): Promise<any> {
+		try {
+			const userData = await this.authService.getGoogleProfileData(req.cookies.access_token);
+			return userData;
+		} catch (err) {
+			return err;
+		}
+	}
+
 
 	@Get()
 	async findAll(): Promise<User[]> {
@@ -40,17 +52,6 @@ export class PlayersController {
 			});
 			if (!user) throw new NotFoundException(`User with id: ${id} not found`);
 			return user;
-		} catch (err) {
-			return err;
-		}
-	}
-
-	@Get("profile/:token")
-	//TODO: Pasar el accessToken como token para acceder a la info del usuario
-	async getProfile(@Param("token") token: string): Promise<any> {
-		try {
-			const userData = await this.authService.getGoogleProfileData(token);
-			return userData;
 		} catch (err) {
 			return err;
 		}

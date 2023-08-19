@@ -33,6 +33,6 @@ import { AuthMiddleware } from "./auth/auth.middleware";
 })
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(AuthMiddleware).forRoutes("protected-route");
+		consumer.apply(AuthMiddleware).forRoutes("protected");
 	}
 }

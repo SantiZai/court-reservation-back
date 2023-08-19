@@ -1,32 +1,37 @@
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
+import { Request } from "express";
 
 @Injectable()
 export class AuthService {
 	private readonly googleAPI =
 		"https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos";
 
-	googleLogin(req) {
+	googleLogin(req: Request) {
 		if (!req.user) {
 			return "No user from google";
 		}
+		console.log(req.signedCookies)
 		return {
 			message: "User info from google",
 			user: req.user,
+			
 		};
 	}
 
 	async getGoogleProfileData(token: string) {
 		try {
 			const res = await axios.get(this.googleAPI, {
-				headers: { Authorization: `Bearer ${token}` },
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
 			const userData = {
 				name: res.data.names[0].displayName,
 				email: res.data.emailAddresses[0].value,
 				picture: res.data.photos[0].url,
 			};
-			return userData
+			return userData;
 		} catch (err) {
 			if (err instanceof TypeError && err.message.includes("circular")) {
 				return { error: "Circular JSON" };
