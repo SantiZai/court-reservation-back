@@ -36,7 +36,7 @@ export class PlayersController {
 	@Get()
 	async findAll(): Promise<User[]> {
 		const users = await this.playersService.player().findMany();
-		return users;
+		return users
 	}
 
 	@Get(":id")
