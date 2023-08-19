@@ -12,38 +12,49 @@ import {
 } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PlayersService } from "./players.service";
-import { Request } from "express";
 import { AuthService } from "src/auth/auth.service";
+import { Request } from "express";
 
 @Controller("players")
 export class PlayersController {
-	constructor(private readonly playersService: PlayersService, private readonly authService: AuthService) {}
+	constructor(
+		private readonly playersService: PlayersService,
+		private readonly authService: AuthService,
+	) {}
+
+	@Get("profile")
+	async getProfile(@Req() req: Request): Promise<any> {
+		try {
+			const userData = await this.authService.getGoogleProfileData(req.cookies.access_token);
+			return userData;
+		} catch (err) {
+			return err;
+		}
+	}
+
 
 	@Get()
 	async findAll(): Promise<User[]> {
 		const users = await this.playersService.player().findMany();
-		return users;
+		return users
 	}
 
 	@Get(":id")
 	async findOne(@Param("id") id: string): Promise<User> {
-		const user = await this.playersService.player().findUnique({
-			where: {
-				id: parseInt(id),
-			},
-			include: {
-				reservations: true,
-			},
-		});
-
-		if (!user) throw new NotFoundException(`User with id: ${id} not found`);
-		return user;
-	}
-
-	@Get("profile/:token")
-	async getProfile(@Param("token") token: string, @Req() req: Request): Promise<User> {
-		const accessToken = req.cookies.access_token;
-		const userData = this.authService.verifyAndDecodeAccessToken(token);
+		try {
+			const user = await this.playersService.player().findUnique({
+				where: {
+					id: parseInt(id),
+				},
+				include: {
+					reservations: true,
+				},
+			});
+			if (!user) throw new NotFoundException(`User with id: ${id} not found`);
+			return user;
+		} catch (err) {
+			return err;
+		}
 	}
 
 	@Post()

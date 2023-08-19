@@ -27,12 +27,20 @@ export class AuthController {
 		@Req() req: any,
 	): Promise<any> {
 		const accessToken = req.user.accessToken;
+		const userId = req.user.existUser.id;
 		const expirationDate = new Date();
 		expirationDate.setDate(expirationDate.getDate() + 30);
 		res.cookie("access_token", accessToken, {
 			httpOnly: true,
+			domain: process.env.HOST,
 			expires: expirationDate,
 			//TODO: hacer la cookie segura
+			//secure: true,
+		});
+		res.cookie("user_id", userId, {
+			httpOnly: true,
+			domain: process.env.HOST,
+			expires: expirationDate,
 			//secure: true,
 		});
 		res.send({
