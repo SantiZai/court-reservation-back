@@ -17,7 +17,11 @@ export class CourtsController {
 
 	@Get()
 	async findAll(): Promise<Court[]> {
-		const courts = await this.courtsService.court().findMany();
+		const courts = await this.courtsService.court().findMany({
+			include: {
+				reservations: true,
+			},
+		});
 		return courts;
 	}
 
@@ -27,15 +31,25 @@ export class CourtsController {
 			where: {
 				id: parseInt(id),
 			},
+			include: {
+				reservations: true,
+			},
 		});
 		if (!court) throw new NotFoundException(`Court with id: ${id} not found`);
 		return court;
 	}
+
 	@Post()
 	async create(@Body() court: Court): Promise<Court> {
 		try {
 			const newCourt = await this.courtsService.court().create({
-				data: court,
+				data: {
+					...court,
+					reservations: { create: [] },
+				},
+				include: {
+					reservations: true,
+				},
 			});
 			return newCourt;
 		} catch (err) {

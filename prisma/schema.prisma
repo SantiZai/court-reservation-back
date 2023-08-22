@@ -28,12 +28,16 @@ model Court {
   reservations Reservation[]
 }
 
+//TODO: actualizr prisma y crear @min @max manualmente pq prisma es una cagada
 model Reservation {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  reserved  DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  court     Court    @relation(fields: [courtId], references: [id])
-  courtId   Int
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  reservedMonth   Int      @default(1)
+  reservedDay     Int      @default(1)
+  reservedHour    Int      @default(1)
+  reservedMinutes Int      @default(0)
+  user            User     @relation(fields: [userId], references: [id])
+  userId          Int
+  court           Court    @relation(fields: [courtId], references: [id])
+  courtId         Int
 }
