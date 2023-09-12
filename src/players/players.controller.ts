@@ -25,18 +25,19 @@ export class PlayersController {
 	@Get("profile")
 	async getProfile(@Req() req: Request): Promise<any> {
 		try {
-			const userData = await this.authService.getGoogleProfileData(req.cookies.access_token);
+			const userData = await this.authService.getGoogleProfileData(
+				req.cookies.access_token,
+			);
 			return userData;
 		} catch (err) {
 			return err;
 		}
 	}
 
-
 	@Get()
 	async findAll(): Promise<User[]> {
 		const users = await this.playersService.player().findMany();
-		return users
+		return users;
 	}
 
 	@Get(":id")
@@ -118,6 +119,25 @@ export class PlayersController {
 			} else throw new NotFoundException(`User with id: ${id} not found`);
 		} catch (err) {
 			throw err;
+		}
+	}
+
+	@Get("bring/:email")
+	async findByEmil(@Param("email") email: string): Promise<User> {
+		try {
+			const user = await this.playersService.player().findUnique({
+				where: {
+					email,
+				},
+				include: {
+					reservations: true,
+				},
+			});
+			if (!user)
+				throw new NotFoundException(`User with email: ${email} not found`);
+			return user;
+		} catch (err) {
+			return err;
 		}
 	}
 }
