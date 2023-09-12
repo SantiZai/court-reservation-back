@@ -28,7 +28,7 @@ model Court {
   reservations Reservation[]
 }
 
-//TODO: actualizr prisma y crear @min @max manualmente pq prisma es una cagada
+//TODO: actualizar prisma y crear @min @max manualmente pq prisma es una cagada
 model Reservation {
   id              Int      @id @default(autoincrement())
   createdAt       DateTime @default(now())
