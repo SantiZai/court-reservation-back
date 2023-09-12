@@ -32,6 +32,7 @@ model Court {
 model Reservation {
   id              Int      @id @default(autoincrement())
   createdAt       DateTime @default(now())
+  duration        Int      @default(60)
   reservedMonth   String   @db.VarChar(255)
   reservedDay     String   @db.VarChar(255)
   reservedHour    String   @default("01") @db.VarChar(255)
