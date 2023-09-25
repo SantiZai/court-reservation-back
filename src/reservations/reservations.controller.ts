@@ -36,6 +36,7 @@ export class ReservationsController {
 			throw new NotFoundException(`Reservation with id: ${id} not found`);
 		return reservation;
 	}
+	
 	@Post()
 	async create(@Body() reservation: Reservation): Promise<Reservation> {
 		try {
