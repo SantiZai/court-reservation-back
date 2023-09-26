@@ -12,6 +12,20 @@ enum State {
   Ocupado
 }
 
+enum Surface {
+  Polvo
+  Cemento
+  CespedNatural
+  CespedSintetico
+  Parquet
+}
+
+enum Sport {
+  Tenis
+  Basquet
+  Futbol
+}
+
 model User {
   id           Int           @id @default(autoincrement())
   email        String        @unique @db.VarChar(255)
@@ -21,10 +35,25 @@ model User {
   reservations Reservation[]
 }
 
+model Club {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  country     String        @db.VarChar(255)
+  province    String        @db.VarChar(255)
+  city        String        @db.VarChar(255)
+  courts      Court[]
+  sports      Sport[]
+  Reservation Reservation[]
+}
+
 model Court {
   id           Int           @id @default(autoincrement())
   name         String        @db.VarChar(255)
   state        State         @default(Disponible)
+  illuminated  Boolean       @default(false)
+  Club         Club          @relation(fields: [clubId], references: [id])
+  clubId       Int
+  sport        Sport
   reservations Reservation[]
 }
 
@@ -39,6 +68,8 @@ model Reservation {
   reservedMinutes String   @default("00") @db.VarChar(255)
   user            User     @relation(fields: [userId], references: [id])
   userId          Int
+  club            Club     @relation(fields: [clubId], references: [id])
+  clubId          Int
   court           Court    @relation(fields: [courtId], references: [id])
   courtId         Int
 }

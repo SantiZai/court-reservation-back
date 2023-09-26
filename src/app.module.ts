@@ -11,6 +11,8 @@ import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { GoogleOAuthStrategy } from "./auth/strategies/google-oauth.strategy";
 import { AuthMiddleware } from "./auth/auth.middleware";
+import { ClubsController } from './clubs/clubs.controller';
+import { ClubsService } from './clubs/clubs.service';
 
 @Module({
 	imports: [],
@@ -21,6 +23,7 @@ import { AuthMiddleware } from "./auth/auth.middleware";
 		ReservationsController,
 		ReservationsController,
 		AuthController,
+		ClubsController,
 	],
 	providers: [
 		AppService,
@@ -29,6 +32,7 @@ import { AuthMiddleware } from "./auth/auth.middleware";
 		ReservationsService,
 		AuthService,
 		GoogleOAuthStrategy,
+		ClubsService,
 	],
 })
 export class AppModule implements NestModule {
