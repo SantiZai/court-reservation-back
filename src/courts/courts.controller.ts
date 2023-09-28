@@ -7,17 +7,30 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 } from "@nestjs/common";
 import { CourtsService } from "./courts.service";
-import { Court } from "@prisma/client";
+import { Club, Court } from "@prisma/client";
+import { ClubsService } from "src/clubs/clubs.service";
 
 @Controller("courts")
 export class CourtsController {
-	constructor(private readonly courtsService: CourtsService) {}
+	constructor(
+		private readonly courtsService: CourtsService,
+		private readonly clubsService: ClubsService,
+	) {}
 
 	@Get()
-	async findAll(): Promise<Court[]> {
+	async findAll(@Query("club") club: string): Promise<Court[]> {
+		const existingClub: Club = await this.clubsService.club().findFirst({
+			where: {
+				name: club,
+			},
+		});
 		const courts = await this.courtsService.court().findMany({
+			where: {
+				clubId: existingClub.id,
+			},
 			include: {
 				reservations: true,
 			},
