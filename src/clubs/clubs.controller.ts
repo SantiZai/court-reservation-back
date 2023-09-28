@@ -26,11 +26,15 @@ export class ClubsController {
 		return clubs;
 	}
 
-	@Get(":id")
-	async findOne(@Param("id") id: string): Promise<Club> {
+	/*Traer las canchas del club*/
+	@Get(":id/courts")
+	async findClubCourts(@Param("id") id: string): Promise<Club> {
 		const club = await this.clubsService.club().findUnique({
 			where: {
 				id: parseInt(id),
+			},
+			include: {
+				courts: true,
 			},
 		});
 		if (!club) throw new NotFoundException(`Club with id: ${id} not found`);
