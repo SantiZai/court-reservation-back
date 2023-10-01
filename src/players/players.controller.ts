@@ -8,6 +8,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 	Req,
 } from "@nestjs/common";
 import { User } from "@prisma/client";
@@ -29,6 +30,23 @@ export class PlayersController {
 				req.cookies.access_token,
 			);
 			return userData;
+		} catch (err) {
+			return err;
+		}
+	}
+
+	/*Busca si existe un usuario con el mail pasado por query*/
+	@Get("exists")
+	async getUser(@Query("email") email: string) {
+		try {
+			const existingUser = await this.playersService.player().findFirst({
+				where: {
+					email,
+				},
+			});
+			if (!existingUser)
+				throw new NotFoundException(`User with email: ${email} not found`);
+			return existingUser;
 		} catch (err) {
 			return err;
 		}
