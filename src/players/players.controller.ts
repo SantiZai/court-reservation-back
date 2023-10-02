@@ -54,7 +54,11 @@ export class PlayersController {
 
 	@Get()
 	async findAll(): Promise<User[]> {
-		const users = await this.playersService.player().findMany();
+		const users = await this.playersService.player().findMany({
+			include: {
+				reservations: true,
+			},
+		});
 		return users;
 	}
 
