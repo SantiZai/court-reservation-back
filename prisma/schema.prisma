@@ -32,6 +32,8 @@ model User {
   fullname     String        @unique @db.VarChar(255)
   picture      String        @db.VarChar(255)
   admin        Boolean       @default(false)
+  clubAdmin    Club?          @relation(fields: [clubAdminId], references: [id])
+  clubAdminId  Int?
   reservations Reservation[]
 }
 
@@ -41,9 +43,11 @@ model Club {
   country     String        @db.VarChar(255)
   province    String        @db.VarChar(255)
   city        String        @db.VarChar(255)
+  admin       Int
   courts      Court[]
   sports      Sport[]
   Reservation Reservation[]
+  User        User[]
 }
 
 model Court {
@@ -51,7 +55,7 @@ model Court {
   name         String        @db.VarChar(255)
   state        State         @default(Disponible)
   illuminated  Boolean       @default(false)
-  Club         Club          @relation(fields: [clubId], references: [id])
+  club         Club          @relation(fields: [clubId], references: [id])
   clubId       Int
   sport        Sport
   reservations Reservation[]
