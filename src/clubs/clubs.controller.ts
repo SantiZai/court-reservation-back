@@ -16,9 +16,23 @@ import { Club, Sport } from "@prisma/client";
 export class ClubsController {
 	constructor(private readonly clubsService: ClubsService) {}
 
-	/*Traer las canchas del club*/
+	/*Traer el club y sus canchas*/
 	@Get(":id/courts")
 	async findClubCourts(@Param("id") id: string): Promise<Club> {
+		const club = await this.clubsService.club().findUnique({
+			where: {
+				id: parseInt(id),
+			},
+			include: {
+				courts: true,
+			},
+		});
+		if (!club) throw new NotFoundException(`Club with id: ${id} not found`);
+		return club;
+	}
+
+	@Get(":id")
+	async findClubById(@Param("id") id: string): Promise<Club> {
 		const club = await this.clubsService.club().findUnique({
 			where: {
 				id: parseInt(id),

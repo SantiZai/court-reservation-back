@@ -12,10 +12,10 @@ enum State {
   Ocupado
 }
 
-enum Surface {
-  Polvo
+enum SURFACE {
+  PolvoDeLadrillo
   Cemento
-  CespedNatural
+  Cesped
   CespedSintetico
   Parquet
 }
@@ -57,10 +57,10 @@ model Court {
   club         Club          @relation(fields: [clubId], references: [id])
   clubId       Int
   sport        Sport
+  surface      SURFACE       
   reservations Reservation[]
 }
 
-//TODO: actualizar prisma y crear @min @max manualmente pq prisma es una cagada
 model Reservation {
   id              Int      @id @default(autoincrement())
   createdAt       DateTime @default(now())
