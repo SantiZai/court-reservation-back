@@ -32,8 +32,7 @@ model User {
   fullname     String        @unique @db.VarChar(255)
   picture      String        @db.VarChar(255)
   admin        Boolean       @default(false)
-  clubAdmin    Club?          @relation(fields: [clubAdminId], references: [id])
-  clubAdminId  Int?
+  clubAdmin    Int?
   reservations Reservation[]
 }
 
@@ -43,11 +42,11 @@ model Club {
   country     String        @db.VarChar(255)
   province    String        @db.VarChar(255)
   city        String        @db.VarChar(255)
-  admin       Int
+  image       String        @db.VarChar(255)
+  adminId     Int
   courts      Court[]
   sports      Sport[]
   Reservation Reservation[]
-  User        User[]
 }
 
 model Court {
