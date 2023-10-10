@@ -13,27 +13,13 @@ import {
 } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PlayersService } from "./players.service";
-import { AuthService } from "src/auth/auth.service";
 import { Request } from "express";
 
 @Controller("players")
 export class PlayersController {
 	constructor(
 		private readonly playersService: PlayersService,
-		private readonly authService: AuthService,
 	) {}
-
-	@Get("profile")
-	async getProfile(@Req() req: Request): Promise<any> {
-		try {
-			const userData = await this.authService.getGoogleProfileData(
-				req.cookies.access_token,
-			);
-			return userData;
-		} catch (err) {
-			return err;
-		}
-	}
 
 	/*Busca si existe un usuario con el mail pasado por query*/
 	@Get("exists")

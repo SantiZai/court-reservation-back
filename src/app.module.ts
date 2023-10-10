@@ -7,12 +7,8 @@ import { CourtsService } from "./courts/courts.service";
 import { ReservationsService } from "./reservations/reservations.service";
 import { CourtsController } from "./courts/courts.controller";
 import { PlayersService } from "./players/players.service";
-import { AuthController } from "./auth/auth.controller";
-import { AuthService } from "./auth/auth.service";
-import { GoogleOAuthStrategy } from "./auth/strategies/google-oauth.strategy";
-import { AuthMiddleware } from "./auth/auth.middleware";
-import { ClubsController } from './clubs/clubs.controller';
-import { ClubsService } from './clubs/clubs.service';
+import { ClubsController } from "./clubs/clubs.controller";
+import { ClubsService } from "./clubs/clubs.service";
 
 @Module({
 	imports: [],
@@ -22,7 +18,6 @@ import { ClubsService } from './clubs/clubs.service';
 		PlayersController,
 		ReservationsController,
 		ReservationsController,
-		AuthController,
 		ClubsController,
 	],
 	providers: [
@@ -30,13 +25,9 @@ import { ClubsService } from './clubs/clubs.service';
 		PlayersService,
 		CourtsService,
 		ReservationsService,
-		AuthService,
-		GoogleOAuthStrategy,
 		ClubsService,
 	],
 })
 export class AppModule implements NestModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(AuthMiddleware).forRoutes("protected");
-	}
+	configure(consumer: MiddlewareConsumer) {}
 }
