@@ -13,4 +13,4 @@ NODE_VERSION = "18"
 
 # Comando de inicio  
 [start] 
-  command = "npm start:prod"
+  command = "npm start"
