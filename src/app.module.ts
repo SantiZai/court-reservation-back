@@ -9,9 +9,10 @@ import { CourtsController } from "./courts/courts.controller";
 import { PlayersService } from "./players/players.service";
 import { ClubsController } from "./clubs/clubs.controller";
 import { ClubsService } from "./clubs/clubs.service";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
-	imports: [],
+	imports: [ConfigModule.forRoot()],
 	controllers: [
 		AppController,
 		CourtsController,
@@ -28,6 +29,4 @@ import { ClubsService } from "./clubs/clubs.service";
 		ClubsService,
 	],
 })
-export class AppModule implements NestModule {
-	configure(consumer: MiddlewareConsumer) {}
-}
+export class AppModule {}
