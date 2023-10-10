@@ -14,7 +14,3 @@ NODE_VERSION = "18"
 # Comando de inicio  
 [start] 
   command = "npm start"
-
-# Variables de entorno adicionales
-[env]
-  PORT = 8080
