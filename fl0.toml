@@ -11,8 +11,9 @@ PORT = 8080
   - command = "npm install --shamefully-hoist"
   - command = "npm run build"
   - command = "npm lock -y"
-  - command = "npm install -g @nestjs/cli"
+  - command = "npm install --only=dev"
+  - command = "echo $PATH"
 
 # Comando de inicio  
 [start] 
-  command = "npx nest start"
+  command = "/app/node_modules/.bin/nest start"
