@@ -3,20 +3,17 @@ name = "court-reservation"
 
 # Versión de Node.js
 [env]
-NODE_VERSION = "14"
-
-# Ubicación del caché de pnpm
-PNPM_HOME = "/workspace/.pnpm-store"
+NODE_VERSION = "18"
 
 # Comandos de build
 [build]
-  - command = "pnpm install --shamefully-hoist"
-  - command = "pnpm run build"
-  - command = "pnpm lock -y"
+  - command = "npm install --shamefully-hoist"
+  - command = "npm run build"
+  - command = "npm lock -y"
 
 # Comando de inicio  
 [start] 
-  command = "pnpm start"
+  command = "npm start"
 
 # Variables de entorno adicionales
 [env]
