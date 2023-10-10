@@ -13,7 +13,6 @@ import {
 } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PlayersService } from "./players.service";
-import { Request } from "express";
 
 @Controller("players")
 export class PlayersController {
