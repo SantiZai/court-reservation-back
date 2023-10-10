@@ -1,6 +1,23 @@
-name = "court-reservation"
-build = "npm install" 
-start = "npm start"
+# Nombre de la aplicación
+name = "court-reservation" 
 
+# Versión de Node.js
+[env]
+NODE_VERSION = "14"
+
+# Ubicación del caché de pnpm
+PNPM_HOME = "/workspace/.pnpm-store"
+
+# Comandos de build
+[build]
+  - command = "pnpm install --shamefully-hoist"
+  - command = "pnpm run build"
+  - command = "pnpm lock -y"
+
+# Comando de inicio  
+[start] 
+  command = "pnpm start"
+
+# Variables de entorno adicionales
 [env]
   PORT = 8080
