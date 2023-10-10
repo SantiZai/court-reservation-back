@@ -1,0 +1,6 @@
+name = "court-reservation"
+build = "npm install" 
+start = "npm start"
+
+[env]
+  PORT = 8080
