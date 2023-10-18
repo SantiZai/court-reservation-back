@@ -36,7 +36,21 @@ export class ReservationsController {
 			throw new NotFoundException(`Reservation with id: ${id} not found`);
 		return reservation;
 	}
-	
+
+	@Get("players/:id")
+	async getForPlayerId(@Param("id") id: string): Promise<Reservation[]> {
+		const reservations = await this.reservationsService.reservation().findMany({
+			where: {
+				userId: parseInt(id),
+			},
+		});
+		if (!reservations)
+			throw new NotFoundException(
+				`The player with the id: ${id} not have reservations`,
+			);
+		return reservations;
+	}
+
 	@Post()
 	async create(@Body() reservation: Reservation): Promise<Reservation> {
 		try {
